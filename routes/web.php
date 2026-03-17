@@ -15,9 +15,9 @@ Route::get('/hello', function () {
 });
 
 
-// Route::get('/table/{number?}', function ($number) {
-//     return view('table', ['number' => $number]);
-// })->whereNumber('number');
+Route::get('/table2/{number?}', function ($number) {
+    return view('table', ['number' => $number]);
+})->whereNumber('number');
 
 Route::get('/abcd/{id?}', function($id = null) {
     return "welcome" . $id;
@@ -37,9 +37,24 @@ Route::get('/sum/{num1}/{num2}', function($num1,$num2){
 })->where('num','[0-9]+');
 
 Route::get('/table/{number?}', function ($number) {
-    $output = '';
     for ($i = 1; $i <= 10; $i++) {
-        $output .= "<h2>" . $number . " * " . $i . " = " . ($number * $i) . "<br></h2>";
+        echo "<h2>" . $number . " * " . $i . " = " . ($number * $i) . "<br></h2>";
     }
-    return $output;
 })->whereNumber('number');
+
+Route::fallback(function(){
+    return "<h1> Page not exist, try agai later</h1>";
+});
+
+Route::get('/aboutus', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/homepage', function(){
+    return view('home');
+})->name('home');
+
+Route::get('/welcomepage', function(){
+    return view('welcome');
+})->name('welcome');
+
