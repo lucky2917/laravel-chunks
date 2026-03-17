@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Cookie;
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,3 +58,82 @@ Route::get('/welcomepage', function(){
     return view('welcome');
 })->name('welcome');
 
+//compact() - dynamic
+Route::get('/new/{name}/{id}', function ($name, $id) {
+    return view('student', compact('name', 'id'));
+});
+
+Route::get('/new1/{name}/{id}' ,function(){
+    $name = "ravi";
+    $id = 20;
+    return view("student")->with(['name' => $name, 'id' => $id]);
+});
+
+//response() -> returns raw data, view file, json data
+
+Route::get('/hi', function(){
+    return response("hii welcome");
+});
+
+Route::get('/hii', function(){
+    return response()->view('welcome');
+});
+
+Route::get('/jsn', function(){
+    return response()->json([
+        "name" => 'Ravi',
+        "course" => 'software enginering',
+        "roll no" => '5'
+    ])->header('Content-type', 'application/json');
+});
+
+// without response() and specifying json qualites it auto-converted to json data
+Route::get('/json', function(){
+
+    $student = [
+        "name" => 'Ravi',
+        "course" => 'software enginering',
+        "roll no" => '5',
+        "courses" => 'web development'
+    ];
+    return($student);
+});
+
+//redirect thru respose()
+Route::get('/jsnold', function(){
+    return response()->redirectTo("/jsn");
+});
+
+//status code thru response
+Route::get('/not', function(){
+    return response("page not found", 404);
+});
+
+//headers
+Route::get('/header',function(){
+    return response("hello this is with headers")->header('Content-Type', 'text/plain');
+});
+
+Route::get('/hdr',function(){
+    return response("welcome to laravel")->header('X-welcome-header','welcome to laravel');
+});
+
+Route::get('/set-cookie', function(){
+    $cookie = cookie('abc','ravi',1);
+    return response("cookie is set")->cookie($cookie);
+});
+
+Route::get('/get-cookie', function(){
+    $username = request()->cookie('abc');
+    return response("Username: " . ($username ?? "Not found"));
+});
+
+Route::get('/del-cookie', function(){
+    $cookie = Cookie::forget("abc");
+    return response("deletion done")->withCookie($cookie);
+});
+
+///subview
+Route::get("/subview", function(){
+    return view('admin.hello');
+});
