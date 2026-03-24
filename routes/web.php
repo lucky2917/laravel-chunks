@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -136,4 +137,43 @@ Route::get('/del-cookie', function(){
 ///subview
 Route::get("/subview", function(){
     return view('admin.hello');
+});
+
+// cookies using facades
+Route::get('/fcookie', function(){
+    Cookie::queue('user', 'ravi', 3);
+    return "cookie set successful";
+});
+//get cookie
+Route::get('/fcookie-get', function(Request $request){
+    $user = $request->cookie('user');
+    return response("Username: " . ($user ?? "Not found"));
+});
+
+Route::get('fcookie-del',function(){
+    Cookie::queue(Cookie::forget('user'));
+    return "cookie del succesfull";
+});
+
+Route::get('/egname', function(){
+    return view('egname');
+});
+
+//create route for FirstController file
+use App\Http\Controllers\FirstController;
+
+Route::get('/read', [FirstController::class,'read']);
+Route::get('/tablenum/{number}', [FirstController::class,'tablenum']);
+Route::get('/stulist', [FirstController::class,'stulist']);
+Route::get('/redir', [FirstController::class,'redir']);
+
+//single controller
+use App\Http\Controllers\SingleController;
+Route::get('/singcontroller', SingleController::class);
+
+//resource controller
+use App\Http\Controllers\ResourceController;
+
+Route::get('/ddd', function(){
+    return view('ddd');
 });
