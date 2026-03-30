@@ -162,10 +162,18 @@ Route::get('/egname', function(){
 //create route for FirstController file
 use App\Http\Controllers\FirstController;
 
-Route::get('/read', [FirstController::class,'read']);
-Route::get('/tablenum/{number}', [FirstController::class,'tablenum']);
-Route::get('/stulist', [FirstController::class,'stulist']);
-Route::get('/redir', [FirstController::class,'redir']);
+// Route::get('/read', [FirstController::class,'read']);
+// Route::get('/tablenum/{number}', [FirstController::class,'tablenum']);
+// Route::get('/stulist', [FirstController::class,'stulist']);
+// Route::get('/redir', [FirstController::class,'redir']);
+
+// group routing for above commented controllers
+Route::controller(FirstController::class)->group(function(){
+    Route::get('/read','read');
+    Route::get('/tablenum/{number}','tablenum');
+    Route::get('/stulist','stulist');
+    Route::get('/redir','redir');
+});
 
 //single controller
 use App\Http\Controllers\SingleController;
@@ -173,7 +181,12 @@ Route::get('/singcontroller', SingleController::class);
 
 //resource controller
 use App\Http\Controllers\ResourceController;
-
+Route::resource('/resourceController', ResourceController::class);
 Route::get('/ddd', function(){
     return view('ddd');
 });
+
+//middleware
+use App\Http\Middleware\ValidUser;
+Route::get('/validuser/{age}/{country}', [FirstController::class, 'validUser'])
+    ->middleware(ValidUser::class);

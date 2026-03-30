@@ -26,5 +26,9 @@ class firstController extends Controller{
     public function redir(){
         return response()->redirectTo("/jsn");
     }
+    public function validUser()
+    {
+        return "Valid user accessed! You are verified.";
+    }
 }
 
