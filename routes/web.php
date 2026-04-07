@@ -24,7 +24,7 @@ Route::get('/abcd/{id?}', function($id = null) {
     return "welcome" . $id;
 });
 
-Route::get('abc/{id1}/xyz/{id2}', function($id1,$id2){
+Route::get('abc/{id1?}/xyz/{id2?}', function($id1 = 6,$id2 = 'ravi'){
     if($id1){
         return "welcome user id: " . $id1 . " and name is " . $id2;
     }
@@ -107,7 +107,7 @@ Route::get('/jsnold', function(){
 
 //status code thru response
 Route::get('/not', function(){
-    return response("page not found", 404);
+    return response("page  found", 200);
 });
 
 //headers
@@ -190,3 +190,8 @@ Route::get('/ddd', function(){
 use App\Http\Middleware\ValidUser;
 Route::get('/validuser/{age}/{country}', [FirstController::class, 'validUser'])
     ->middleware(ValidUser::class);
+
+
+
+
+//ca1 question
