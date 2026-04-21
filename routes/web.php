@@ -195,3 +195,35 @@ Route::get('/validuser/{age}/{country}', [FirstController::class, 'validUser'])
 
 
 //ca1 question
+Route::get('/jewelery', [FirstController::class, 'products']);
+Route::get('/jewelery/{id}', [FirstController::class, 'productsShow']);
+
+use App\Http\Controllers\emailController;
+Route::get('/send-email', [emailController::class, 'sendmail']);
+
+use App\Http\Controllers\fileupload;
+
+Route::get('/upload', function () {
+    return view('fileupload');
+});
+
+Route::post('/upload', [fileupload::class, 'store']);
+
+Route::get('/create-session', function() {
+    session()->put('session set?', 'yes, it is..');
+    return 'yeahh! session is set successfully';
+});
+Route::get('/get-session', function(){
+    $value = session()->get('session set?');
+    return $value;
+});
+Route::get('/delete-session', function() {
+    session()->forget('session set?');
+    return 'damnnn! session is deleted!';
+});
+
+use App\Http\Controllers\sessionController;
+Route::get('/index-session-cont', [sessionController::class, 'index']);
+Route::get('/store-session-cont', [sessionController::class, 'store']);
+Route::get('/get-session-cont', [sessionController::class, 'get']);
+Route::get('/del-session-cont', [sessionController::class, 'destroy']);
