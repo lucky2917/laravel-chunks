@@ -202,6 +202,7 @@ use App\Http\Controllers\emailController;
 Route::get('/send-email', [emailController::class, 'sendmail']);
 
 use App\Http\Controllers\fileupload;
+use App\Http\Controllers\firstController as ControllersFirstController;
 
 Route::get('/upload', function () {
     return view('fileupload');
@@ -227,3 +228,23 @@ Route::get('/index-session-cont', [sessionController::class, 'index']);
 Route::get('/store-session-cont', [sessionController::class, 'store']);
 Route::get('/get-session-cont', [sessionController::class, 'get']);
 Route::get('/del-session-cont', [sessionController::class, 'destroy']);
+
+
+Route::view('/en',"welcome");
+
+Route::get('/hindi', function () {
+    app()->setLocale('hindi');
+    return view('welcome');
+});
+
+Route::get('/about', function () {
+    app()->setLocale('telugu');
+    return view('welcome');
+})->name('about');
+
+
+Route::get('/form', function () {
+    return view('forms');
+});
+
+Route::post('/submit-form', [firstController::class, 'submit']);

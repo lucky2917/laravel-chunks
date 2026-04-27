@@ -52,7 +52,12 @@ class firstController extends Controller{
         $item = $jewellery[$id];
         return view('jeweleryShow', compact('item', 'id'));
     }
-
+    public function submit(Request $request)
+    {
+        $name = $request->input('name');
+        
+        echo "Form submitted successfully! Welcome, " . $name;
+    }
 
 }
 
