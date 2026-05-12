@@ -248,3 +248,74 @@ Route::get('/form', function () {
 });
 
 Route::post('/submit-form', [firstController::class, 'submit']);
+
+use Illuminate\Support\Facades\DB;
+
+Route::get('/add-user', function(){
+    DB::table('students')->insert([
+        'name' => 'lmao',
+        'email' => 'ravi@imao.com',
+        'age' => 20,
+        'created_at' => now(),
+        'updated_at' => now()
+    ]);
+    
+    return "User added successfully!";
+});
+
+Route::get('/users', function() {
+    $users = DB::table('students')->get();
+    dump($users);
+    //return $users;
+});
+
+Route::get('/user/{id}', function($id) {
+    $user=DB::table('students')->where('id', $id)->first();
+    return response()->json($user);
+});
+
+Route::get('/delete-user/{id}', function($id) {
+    DB::table('students')->where('id', $id)->delete();
+    return "User with ID {$id} is deleted";
+});
+
+Route::get('/users-constrained1', function() {
+    $constrainedUsers = DB::table('students')
+        ->whereBetween('age', [20, 30])
+        ->orderBy('name', 'asc') 
+        ->get();
+        
+    return response()->json($constrainedUsers);
+});
+
+Route::get('/users-constrained2', function() {
+    $constrainedUsers = DB::table('students')
+        ->orderBy('name', 'asc') 
+        ->get();
+        
+    return response()->json($constrainedUsers);
+});
+
+use App\Http\Controllers\StudentController;
+
+Route::get('/ctrl-add-user', [StudentController::class, 'addUser']);
+Route::get('/ctrl-users', [StudentController::class, 'getAllUserss']);
+Route::get('/ctrl-user/{id}', [StudentController::class, 'getUser']);
+Route::get('/ctrl-delete-user/{id}', [StudentController::class, 'deleteUser']);
+
+
+Route::get('/add-student-form', [StudentController::class, 'showForm']);
+Route::post('/submit-student', [StudentController::class, 'storeUser']);
+
+use App\Http\Controllers\StudentEloquentController;
+
+// Eloquent routes
+Route::get('/orm-users', [StudentEloquentController::class, 'index']);
+Route::get('/orm-user/{id}', [StudentEloquentController::class, 'show']);
+Route::get('/orm-add-user', [StudentEloquentController::class, 'store']);
+Route::get('/orm-update-user/{id}', [StudentEloquentController::class, 'update']);
+Route::get('/orm-delete-user/{id}', [StudentEloquentController::class, 'destroy']);
+
+
+Route::get('/edit-student/{id}', [StudentController::class, 'editForm']);
+Route::post('/update-student/{id}', [StudentController::class, 'updateUser']);
